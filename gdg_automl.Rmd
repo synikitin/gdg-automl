@@ -1,0 +1,193 @@
+---
+title: "AutoML: a High-level Interface for Developers"
+author: "Slava Nikitin"
+output:
+  rmdformats::readthedown:
+    highlight: kate
+    thumbnnails: true
+    lightbox: true
+    # self_contained: true
+css: gdg.css
+---
+
+
+```{r knitr_init, echo=FALSE, cache=FALSE}
+library(knitr)
+library(rmdformats)
+
+## Global options
+options(max.print="75")
+opts_chunk$set(echo=FALSE,
+	             cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE)
+opts_knit$set(width=75)
+```
+
+
+## ML is an exponential trend in society and technology, powered by other trends
+
+<div style="text-align: center;">
+![](https://miro.medium.com/max/1024/1*zWyqQ2EP83gBcLZHGzb-TA.jpeg)
+![](https://miro.medium.com/max/1086/1*_sIf35S9d9qkLuh62phOHw.jpeg)
+</div>
+
+<div style="text-align: center;">
+![](https://static.arxiv.org/static/arxiv.marxdown/0.1/help/stats/2017_by_area/newsubs.png)
+![](https://pbs.twimg.com/media/CxUTRcjUsAA_FiS.jpg)
+</div>
+
+Data and compute and math are historical bottlenecks to wider adoption and larger impact
+
+## This is a return on cross-generational investments
+
+Blaise Pascal:
+
+<div style="text-align: center;">
+![](https://steemitimages.com/640x0/https://2.bp.blogspot.com/-J4iANcdfYQU/TkvB8Hi4BfI/AAAAAAAAAV8/olDSM4D5i50/s1600/abc.jpg)
+![](https://upload.wikimedia.org/wikipedia/commons/8/80/Arts_et_Metiers_Pascaline_dsc03869.jpg)
+</div>
+
+Historically, most applications in science, some in industry:
+
+1. Radius of the earth
+2. Orbits of planets
+3. Census statistics
+4. Gambling
+5. Insurance
+6. Navigation
+7. Agriculture
+8. Assembly lines
+
+## ML is making people to reconsider what is software and how it is created
+
+Software 1.0: (deterministic)
+
+1. inherently deterministic
+2. errors unacceptable
+3. little data, or hard to collect data
+4. ability to guess the complete algorithm and iterate on the design with some metric in mind
+5. guessed algorithm is underperforming and practically infeasible
+
+Software 2.0: (probabilistic)
+  
+1. inherently probabilistic
+2. errors are acceptable
+3. easy to collect, or large amounts are available
+4. inability to imagine the steps or
+5. high performance requires exponentially increasing number of steps covering a variety of corner cases
+
+<div style="text-align: center;">
+![](https://electrek.co/2018/06/11/tesla-ai-director-insights-autopilot-computer-vision-neural-net/screen-shot-2018-06-11-at-6-10-47-am/)
+![](https://i1.wp.com/electrek.co/wp-content/uploads/sites/3/2018/06/screen-shot-2018-06-11-at-6-11-18-am.jpg?zoom=2&w=493&h=277&quality=82&strip=all&ssl=1)
+</div>
+
+<div style="text-align: center;">
+![](https://electrek.co/wp-content/uploads/sites/3/2018/06/screen-shot-2018-06-11-at-6-20-34-am.jpg)
+![](https://miro.medium.com/max/2438/1*5NG3U8MsaTqmQpjkr_-UOw.png)
+</div>
+
+  
+## Don't need to be a data scientist to make useful predictive models
+
+<div style="text-align: center;">
+![](https://d33wubrfki0l68.cloudfront.net/571b056757d68e6df81a3e3853f54d3c76ad6efc/32d37/diagrams/data-science.png)
+</div>
+
+
+Interfaces to ML: 
+
+1. APIs with canned models (especially text, images, sounds)
+2. AutoML (google, h2o)
+3. Robust open-source libraries (xgboost)
+4. Modeling and inference frameworks (tensorflow)
+
+## AutoML is an efficient, flexible interface to custom ML
+
+AutoML is intended to:
+
+1. Open ML to non-experts
+2. Make sure a decent model is built and deployed
+
+
+<div style="text-align: center;">
+![](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIgvm2FhTHjY1mOGV_XgOJ3KmPhMzA2BOWPSsN1b1KIP2KHUaL&s)
+![](https://s3-ap-south-1.amazonaws.com/av-blog-media/wp-content/uploads/2017/06/05153332/model-complex.png)
+</div>
+
+
+<div style="text-align: center;">
+![](https://lh4.googleusercontent.com/lvJRa88mSjJ7jUNv4XfP7oZ4xrgEbqvHph5F3DdqzdoJh_uf6zqym_-4SNzxlLe_1IeN6yBy4iSNgEYt-akx3X5C1ogLVjGX2Hty5BvFGtTC5qOGC_lSW4cY8kyKNfa9EGqVpYHE)
+![](https://pbs.twimg.com/media/DIB2vmFUQAIWyhp?format=jpg&name=large)
+</div>
+
+
+## There are no universal algorithms, but some are very useful
+
+<div style="text-align: center;">
+![](https://miro.medium.com/max/1246/1*0QP3OeK7BAOWGlUcDG6VSw.png)
+</div>
+
+1. Tabular data dominates in terms of usefulness and sheer variety  
+2. Regression/classification models take advantage of it 
+
+<div style="text-align: center;">
+![](https://h2o.ai/wp-content/uploads/2018/08/Screen-Shot-2018-08-01-at-12.30.57-AM.png)
+![](https://qph.fs.quoracdn.net/main-qimg-9d9cd29ec319def37ebe388706b5ae63)
+</div>
+
+
+```{r fig.align='center'}
+apps <- data.frame(
+  Application = c("Spam filtering", "Online advertising", "Email routing", "Wait time", "Employee scheduling", "Cybersecurity"),
+  Input = c("Text message", "Ad, user info", "Email text", "Queue features", "Time, store, role", "Computer behavior"),
+  Output = c("Pass/block", "Click/Skip", "Support line", "Minutes to wait", "Number of employees", "Compromised/normal")
+)
+kableExtra::kable_styling(
+  knitr::kable(apps, align = "l"),
+  position = "center"
+)
+```
+
+
+
+
+## Competition for AutoML marketing is heating up:
+
+
+1. AWS sagemaker
+2. Google AutoML
+3. Microsoft ML studio
+4. DataRobot
+5. H2O
+6. Aible
+
+## GCP has a simple, practical interface
+
+Examples:
+
+1. Text message spam probabilities and classification
+2. Real-state sales price prediction
+
+## AutoML is no silver bullet
+
+Positives:
+
+1. workflow
+2. data splits
+3. good model implementations
+4. infra management
+5. path to deployment and value
+  
+Negatives:
+
+1. model limitations
+2. irrelevant differences, compute waste
+3. if it is broken, hard to debug and iterate in the environment
+  
+## AutoML will be an important factor in supporting the exponential spread of ML across society  
+  
+  
